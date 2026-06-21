@@ -49,20 +49,53 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
 .set-prog{margin-top:5px;background:#e5e7eb;border-radius:10px;height:5px;overflow:hidden}
 .set-prog-fill{height:100%;border-radius:10px;background:#34d399}
 .set-score{font-size:.65rem;color:#059669;margin-top:3px}
+.mode-card-pw{background:#fff7ed;border:2px solid #f97316}
+.mode-card-pw .mode-name{color:#c2410c}
+.mode-card-pw .mode-desc{color:#92400e}
+.mode-card-pw.pw-empty{opacity:.5}
 #screenMode{width:100%;max-width:680px;margin:0 auto;text-align:center}
 .mode-title{color:#fff;font-size:1.05rem;margin-bottom:16px}
-.mode-cards{display:-webkit-flex;display:flex;gap:8px;
+.mode-cards{display:-webkit-flex;display:flex;gap:10px;
   -webkit-justify-content:center;justify-content:center;
   -webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:20px}
-.mode-card{background:#fff;border-radius:16px;padding:16px 12px;cursor:pointer;
-  box-shadow:0 6px 20px rgba(0,0,0,.2);width:148px}
-.mode-icon{font-size:2.2rem;margin-bottom:5px}
-.mode-name{font-size:.9rem;font-weight:bold;color:#3730a3}
-.mode-desc{font-size:.7rem;color:#6b7280;margin-top:3px;line-height:1.5}
+.mode-card{background:#fff;border-radius:16px;padding:16px 8px;cursor:pointer;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);text-align:center;box-sizing:border-box;
+  -webkit-flex:1 1 calc(33.33% - 8px);flex:1 1 calc(33.33% - 8px);max-width:calc(33.33% - 8px);min-width:100px}
+.mode-icon{font-size:2rem;margin-bottom:5px}
+.mode-name{font-size:.88rem;font-weight:bold;color:#3730a3}
+.mode-desc{font-size:.68rem;color:#6b7280;margin-top:3px;line-height:1.5}
 .speed-area{background:rgba(255,255,255,.18);border-radius:16px;padding:16px 20px;margin-bottom:18px}
 .speed-label{color:#fff;font-size:.9rem;margin-bottom:8px}
 .speed-slider{width:100%}
 .speed-disp{color:#fda085;font-weight:bold;font-size:1.3rem}
+.week-strip{background:rgba(255,255,255,.15);border-radius:14px;padding:11px 12px;margin-bottom:12px}
+.week-strip-hdr{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between;margin-bottom:8px}
+.week-streak{color:#fff;font-size:.82rem;font-weight:bold}
+.week-streak strong{font-size:1.3rem;color:#fde047}
+.btn-cal{background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:8px;padding:5px 10px;font-size:.82rem;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.week-days{display:-webkit-flex;display:flex}
+.week-day{-webkit-flex:1;flex:1;text-align:center}
+.week-day-name{font-size:.62rem;color:rgba(255,255,255,.7);margin-bottom:3px}
+.week-day-stamp{font-size:1.3rem;line-height:1.3;min-height:1.5rem}
+.week-day-num{font-size:.65rem;color:rgba(255,255,255,.75);margin-top:2px}
+.week-today .week-day-name,.week-today .week-day-num{color:#fde047;font-weight:bold}
+.cal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.55);z-index:300;display:none;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.cal-box{background:#f0f4ff;border-radius:20px;margin:16px auto;max-width:500px;overflow:hidden}
+.cal-hdr{display:-webkit-flex;display:flex;-webkit-align-items:center;align-items:center;-webkit-justify-content:space-between;justify-content:space-between;padding:14px 16px;background:#4f46e5;color:#fff}
+.cal-nav{background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;font-weight:bold}
+.cal-hdr-title{font-size:1rem;font-weight:bold}
+.cal-close-btn{background:none;border:none;color:#fff;font-size:1.3rem;cursor:pointer;padding:2px 8px}
+.cal-wk-hdr{display:-webkit-flex;display:flex;background:#e0e7ff;padding:5px 0}
+.cal-wk-hdr span{-webkit-flex:1;flex:1;text-align:center;font-size:.72rem;color:#3730a3;font-weight:bold}
+.cal-grid-wrap{padding:6px 6px 12px}
+.cal-row{display:-webkit-flex;display:flex;margin-bottom:1px}
+.cal-cell{-webkit-flex:1;flex:1;text-align:center;padding:4px 1px;min-height:54px;border-radius:8px}
+.cal-cell-num{font-size:.72rem;color:#374151;font-weight:bold}
+.cal-cell-stamp{font-size:1.1rem;line-height:1.3;min-height:1.3rem}
+.cal-cell-time{font-size:.55rem;color:#6b7280}
+.cal-today{background:#e0e7ff}
+.cal-today .cal-cell-num{color:#4f46e5;font-weight:bold}
+.cal-empty{opacity:0}
 .btn-back{background:rgba(255,255,255,.25);color:#fff;border:2px solid rgba(255,255,255,.5);
   border-radius:50px;padding:10px 26px;font-size:.88rem;cursor:pointer}
 #screenQuiz{width:100%;max-width:620px;margin:0 auto}
@@ -92,11 +125,12 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
   font-size:1.05rem;line-height:1.75;text-align:left;margin-bottom:7px}
 .ans-label{font-size:.7rem;font-weight:bold;margin-bottom:3px;color:#065f46}
 .row-ex .en{font-weight:bold;color:#065f46}.row-ex .jp{color:#374151;margin-top:2px}
-.row-syn{background:#eef2ff;border-radius:12px;padding:9px 14px;
-  display:-webkit-flex;display:flex;gap:9px;-webkit-align-items:center;align-items:center;
-  -webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:7px}
-.syn-label{font-size:.72rem;font-weight:bold;color:#3730a3;margin-right:3px}
-.syn-tag{background:#4f46e5;color:#fff;border-radius:20px;padding:4px 14px;font-size:.95rem;font-weight:bold}
+.row-syn{background:#eef2ff;border-radius:12px;padding:12px 14px;
+  display:-webkit-flex;display:flex;gap:10px;-webkit-align-items:center;align-items:center;
+  -webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:7px;
+  -webkit-justify-content:center;justify-content:center}
+.syn-label{font-size:.78rem;font-weight:bold;color:#3730a3;margin-right:2px}
+.syn-tag{background:#4f46e5;color:#fff;border-radius:22px;padding:7px 20px;font-size:1.1rem;font-weight:bold;letter-spacing:.03em}
 .eval-btns{display:-webkit-flex;display:flex;gap:10px;margin-top:6px;width:100%}
 .btn-ok{-webkit-flex:1;flex:1;background:#059669;color:#fff;border:none;border-radius:50px;padding:12px;font-size:.92rem;font-weight:bold;cursor:pointer}
 .btn-ng{-webkit-flex:1;flex:1;background:#dc2626;color:#fff;border:none;border-radius:50px;padding:12px;font-size:.92rem;font-weight:bold;cursor:pointer}
@@ -146,6 +180,9 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
   border-radius:50px;padding:12px 30px;font-size:.9rem;font-weight:bold;cursor:pointer}
 .btn-review{background:#dc2626;color:#fff;border:none;border-radius:50px;padding:12px 30px;
   font-size:.9rem;font-weight:bold;cursor:pointer;display:none}
+
+.btn-review-c{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:.85rem;font-weight:bold;cursor:pointer;display:none}
+.btn-review-b{background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;border:none;border-radius:50px;padding:12px 22px;font-size:.85rem;font-weight:bold;cursor:pointer;display:none}
 .review-complete{background:#dcfce7;color:#15803d;border-radius:14px;padding:12px 20px;
   font-size:1rem;font-weight:bold;text-align:center;display:none;margin-bottom:10px}
 </style>
@@ -211,6 +248,13 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
     <div class="hist-item">⏱ 累計学習時間<strong id="histTotalTime">—</strong></div>
     <div class="hist-item">🔁 合計実行回数<strong id="histSessions">0回</strong></div>
   </div>
+  <div class="week-strip" id="weekStrip">
+    <div class="week-strip-hdr">
+      <span class="week-streak" id="weekStreakTxt">0日連続</span>
+      <button class="btn-cal" onclick="openCal()">📅 カレンダー</button>
+    </div>
+    <div class="week-days" id="weekDaysEl"></div>
+  </div>
   <div class="set-grid">
 <div class="set-btn" onclick="goMode(0)"><div class="set-num">セット 1</div><div class="set-range">No.7〜143</div><div class="set-range">100語</div><div class="set-prog"><div class="set-prog-fill" id="spf0" style="width:0%"></div></div><div class="set-score" id="ssc0">未挑戦</div></div>
 <div class="set-btn" onclick="goMode(1)"><div class="set-num">セット 2</div><div class="set-range">No.144〜277</div><div class="set-range">100語</div><div class="set-prog"><div class="set-prog-fill" id="spf1" style="width:0%"></div></div><div class="set-score" id="ssc1">未挑戦</div></div>
@@ -253,6 +297,14 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
       <div class="mode-icon">📝</div><div class="mode-name">穴埋めクイズ</div>
       <div class="mode-desc">例文の空欄に<br>英単語を入れよう</div>
     </div>
+    <div class="mode-card mode-card-pw pw-empty" id="modePwc" onclick="startPrevWrong('choice',currentSet)">
+      <div class="mode-icon">🔁🎯</div><div class="mode-name">不正解5択</div>
+      <div class="mode-desc" id="modePwcDesc">まだ挑戦なし</div>
+    </div>
+    <div class="mode-card mode-card-pw pw-empty" id="modePwb" onclick="startPrevWrong('blank',currentSet)">
+      <div class="mode-icon">🔁📝</div><div class="mode-name">不正解穴埋め</div>
+      <div class="mode-desc" id="modePwbDesc">まだ挑戦なし</div>
+    </div>
   </div>
   <div class="speed-area">
     <div class="speed-label">⏱ 自動スピード：<span class="speed-disp" id="speedDisp">5</span>秒 / 1枚</div>
@@ -281,15 +333,15 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
       <div class="jp-main" id="jpMain"></div>
       <div class="exp-body" id="ansExp"></div>
       <hr class="divider">
-      <div class="row-ex">
-        <div class="ans-label">✏️ 例文</div>
-        <div class="en" id="ansExEn"></div>
-        <div class="jp" id="ansExJp"></div>
-      </div>
       <div class="row-syn" id="rowSyn">
         <span class="syn-label">類語</span>
         <span class="syn-tag" id="syn1"></span>
         <span class="syn-tag" id="syn2"></span>
+      </div>
+      <div class="row-ex">
+        <div class="ans-label">✏️ 例文</div>
+        <div class="en" id="ansExEn"></div>
+        <div class="jp" id="ansExJp"></div>
       </div>
       <div class="eval-btns" id="evalBtns">
         <button class="btn-ok" onclick="next(true)">✅ わかった！</button>
@@ -321,7 +373,9 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
   <div class="review-complete" id="reviewComplete">🎉 全問正解！完璧です！</div>
   <div class="res-list" id="resList"></div>
   <div class="res-btns">
-    <button class="btn-review" id="btnReview" onclick="startReview()">🔁 不正解だけ復習 (<span id="reviewCount">0</span>問)</button>
+    <button class="btn-review" id="btnReview" onclick="startReview()">🔁 同モードで復習 (<span id="reviewCount">0</span>問)</button>
+    <button class="btn-review-c" id="btnReviewC" onclick="startReviewMode('choice')">🎯 5択で復習 (<span id="reviewCountC">0</span>問)</button>
+    <button class="btn-review-b" id="btnReviewB" onclick="startReviewMode('blank')">📝 穴埋めで復習 (<span id="reviewCountB">0</span>問)</button>
     <button class="btn-restart" onclick="retrySet()">🔄 もう一度</button>
     <button class="btn-top" onclick="goSelect()">📋 セット選択へ</button>
   </div>
@@ -350,7 +404,7 @@ var ALL_VOCAB = [];
 
 // ===== 変数 =====
 var currentSet = 0, currentMode = 'manual', autoSpeed = 5;
-var cards = [], idx = 0, results = [], autoTimer = null, choiceTimer = null;
+var cards = [], idx = 0, results = [], autoTimer = null, choiceTimer = null, quizTimer = null;
 var isMuted = false, hintEnabled = true, femaleVoice = null;
 var studyStartTime = null, isReviewMode = false, reviewSourceMode = 'choice';
 try { isMuted = localStorage.getItem('eiken_muted') === 'true'; } catch(e) {}
@@ -365,10 +419,19 @@ function saveHistory(h) { try { localStorage.setItem('eiken_history', JSON.strin
 function startStudyTimer() { studyStartTime = Date.now(); }
 function stopStudyTimer() {
   if (!studyStartTime) return;
+  var elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+  studyStartTime = null;
   var h = loadHistory();
-  h.totalSeconds += Math.floor((Date.now() - studyStartTime) / 1000);
-  h.sessions++; h.lastDate = new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'2-digit',day:'2-digit'});
-  saveHistory(h); studyStartTime = null;
+  h.totalSeconds += elapsed; h.sessions++;
+  h.lastDate = new Date().toLocaleDateString('ja-JP', {year:'numeric',month:'2-digit',day:'2-digit'});
+  saveHistory(h);
+  try {
+    var tk = dateKey(new Date()), dy = {};
+    try { dy = JSON.parse(localStorage.getItem('eiken_daily')||'{}'); } catch(e2) {}
+    if (!dy[tk]) dy[tk] = {choice:false,blank:false,manual:false,auto:false,seconds:0};
+    dy[tk].seconds = (dy[tk].seconds||0) + elapsed;
+    localStorage.setItem('eiken_daily', JSON.stringify(dy));
+  } catch(e) {}
 }
 function formatTime(sec) {
   var h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60);
@@ -388,7 +451,7 @@ function updateSetScores() {
       var sc = loadScore(i);
       var pf = document.getElementById('spf'+i), ss = document.getElementById('ssc'+i);
       if (pf && sc) pf.style.width = Math.round(sc.ok/sc.total*100) + '%';
-      if (ss && sc) ss.textContent = sc.ok + '/' + sc.total + '問 正解';
+      if (ss) ss.textContent = sc ? sc.ok+'/'+sc.total+'問 正解' : '未挑戦';
     }
   } catch(e) {}
 }
@@ -411,9 +474,38 @@ function pickVoice() {
     for (var i = 0; i < FEMALE_PRIO.length; i++) { var f = vs.filter(FEMALE_PRIO[i]); if (f.length) { femaleVoice = f[0]; return; } }
   } catch(e) {}
 }
-try { pickVoice(); } catch(e) {}
-try { if (window.speechSynthesis) speechSynthesis.onvoiceschanged = pickVoice; } catch(e) {}
+var jpVoice = null;
+var JP_FEMALE_PRIO = [
+  function(v){ return /^ja/i.test(v.lang) && /kyoko/i.test(v.name); },
+  function(v){ return /^ja/i.test(v.lang) && /female/i.test(v.name); },
+  function(v){ return /^ja/i.test(v.lang) && !/otoya|male/i.test(v.name); },
+  function(v){ return /^ja/i.test(v.lang); }
+];
+function pickJpVoice() {
+  try {
+    if (!window.speechSynthesis) return;
+    var vs = speechSynthesis.getVoices(); if (!vs || !vs.length) return;
+    for (var j = 0; j < JP_FEMALE_PRIO.length; j++) {
+      var f = vs.filter(JP_FEMALE_PRIO[j]); if (f.length) { jpVoice = f[0]; return; }
+    }
+  } catch(e) {}
+}
+try { pickVoice(); pickJpVoice(); } catch(e) {}
+try { if (window.speechSynthesis) speechSynthesis.onvoiceschanged = function(){ pickVoice(); pickJpVoice(); }; } catch(e) {}
 
+var jpSpoken = false;
+function speakJapanese(text) {
+  if (isMuted || !window.speechSynthesis || jpSpoken) return;
+  jpSpoken = true;
+  try {
+    speechSynthesis.cancel();
+    var clean = text.replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+    var utt = new SpeechSynthesisUtterance(clean||text);
+    utt.lang = 'ja-JP'; utt.rate = 1.2; utt.pitch = 1.1;
+    if (jpVoice) utt.voice = jpVoice;
+    setTimeout(function(){ try { speechSynthesis.speak(utt); } catch(e){} }, 80);
+  } catch(e) {}
+}
 function speakWord(word) {
   if (isMuted || !window.speechSynthesis) return;
   try {
@@ -489,15 +581,37 @@ function showScreen(id) {
   for (var i = 0; i < list.length; i++) document.getElementById(list[i]).style.display = 'none';
   document.getElementById(id).style.display = 'block';
 }
+function onSetBtnClick(e, i) {
+  var t = e.target || e.srcElement;
+  while (t && t !== e.currentTarget) {
+    if (t.getAttribute && t.getAttribute('data-pw')) { startPrevWrong(t.getAttribute('data-pw'), i); return; }
+    t = t.parentNode;
+  }
+  goMode(i);
+}
 function goSelect() {
   stopAll(); showScreen('screenSelect');
   try { updateHistoryPanel(); } catch(e) {}
   try { updateSetScores(); } catch(e) {}
   try { updateHintBtn(); } catch(e) {}
+  try { updatePrevWrongButtons(); } catch(e) {}
+try { updateWeekStrip(); } catch(e) {}
+  try { updateWeekStrip(); } catch(e) {}
 }
+function startSetMode(i, mode) { currentSet = i; startQuiz(mode); }
 function goMode(i) {
   currentSet = i;
   document.getElementById('modeTitle').textContent = 'セット'+(i+1)+' のモードを選択';
+  try {
+    var wc = JSON.parse(localStorage.getItem('eiken_wrong_choice_'+i)||'null');
+    var wb = JSON.parse(localStorage.getItem('eiken_wrong_blank_'+i)||'null');
+    var ec = document.getElementById('modePwc'), eb = document.getElementById('modePwb');
+    var dc = document.getElementById('modePwcDesc'), db = document.getElementById('modePwbDesc');
+    if (dc) dc.innerHTML = (wc&&wc.length) ? '前回の不正解<br>'+wc.length+'問に再挑戦' : 'まだ挑戦なし';
+    if (db) db.innerHTML = (wb&&wb.length) ? '前回の不正解<br>'+wb.length+'問に再挑戦' : 'まだ挑戦なし';
+    if (ec) { if(wc&&wc.length) ec.classList.remove('pw-empty'); else ec.classList.add('pw-empty'); }
+    if (eb) { if(wb&&wb.length) eb.classList.remove('pw-empty'); else eb.classList.add('pw-empty'); }
+  } catch(e) {}
   showScreen('screenMode');
 }
 function updateSpeed(v) { autoSpeed = parseInt(v); document.getElementById('speedDisp').textContent = v; }
@@ -527,8 +641,20 @@ function startReview() {
   showScreen('screenQuiz'); loadCard();
 }
 
+function startReviewMode(mode) {
+  var wrong = results.filter(function(r){return r.ok===false;});
+  if (!wrong.length) return;
+  isReviewMode = true; reviewSourceMode = mode;
+  cards = shuffle(wrong.slice()); idx = 0; results = []; currentMode = mode;
+  document.getElementById('modeBadge').textContent = (mode==='choice'?'🎯 5択':'📝 穴埋め')+' 復習 '+cards.length+'問';
+  document.getElementById('timerBarBg').style.display = 'none';
+  document.getElementById('autoControls').classList.remove('vis');
+  showScreen('screenQuiz'); loadCard();
+}
+
 // ===== カード =====
 function loadCard() {
+  jpSpoken = false;
   stopAll();
   if (currentMode==='blank') { while (idx<cards.length && !cards[idx].example_en) idx++; if (idx>=cards.length) {showResult();return;} }
   var q = cards[idx], total = cards.length;
@@ -574,6 +700,7 @@ function revealAnswer() {
   document.getElementById('revealBtn').style.display = 'none';
   document.getElementById('hintText').style.display = 'none';
   document.getElementById('answerArea').classList.add('vis');
+  speakJapanese(cards[idx].japanese);
 }
 function next(ok) {
   var c = cards[idx];
@@ -587,6 +714,7 @@ function startAutoCard() {
   animateTimerBar(total);
   autoTimer = setTimeout(function() {
     document.getElementById('answerArea').classList.add('vis');
+    speakJapanese(cards[idx].japanese);
     autoTimer = setTimeout(function() {
       var c = cards[idx];
       results.push({word:c.word,japanese:c.japanese,explanation:c.explanation,example_en:c.example_en,example_jp:c.example_jp,syn1:c.syn1,syn2:c.syn2,num:c.num,ok:null});
@@ -640,6 +768,9 @@ function loadChoiceCard(q) {
     grid.appendChild(btn);
   });
   document.getElementById('choiceArea').classList.add('vis');
+  document.getElementById('timerBarBg').style.display = 'block';
+  animateTimerBar(autoSpeed * 1000);
+  (function(_ci,_q){ quizTimer = setTimeout(function(){ forceTimeout(_ci,_q,'choice'); }, autoSpeed*1000); })(correctIdx, q);
 }
 function loadBlankCard(q) {
   var blanked = blankSentence(q.example_en, q.word);
@@ -663,8 +794,13 @@ function loadBlankCard(q) {
     grid.appendChild(btn);
   });
   document.getElementById('blankArea').classList.add('vis');
+  document.getElementById('timerBarBg').style.display = 'block';
+  animateTimerBar(autoSpeed * 1000);
+  (function(_ci,_q){ quizTimer = setTimeout(function(){ forceTimeout(_ci,_q,'blank'); }, autoSpeed*1000); })(correctIdx, q);
 }
 function answerChoice(selected, correct, q, mode) {
+  if (quizTimer) { clearTimeout(quizTimer); quizTimer = null; }
+  document.getElementById('timerBarBg').style.display = 'none';
   var gridId = mode==='blank' ? 'blankChoiceGrid' : 'choiceGrid';
   var btns = document.getElementById(gridId).querySelectorAll('.choice-btn');
   for (var i=0;i<btns.length;i++) btns[i].disabled = true;
@@ -673,6 +809,7 @@ function answerChoice(selected, correct, q, mode) {
   var ov = document.getElementById('verdictOverlay'), mk = document.getElementById('verdictMark');
   ov.className = 'verdict-overlay show '+(isOk?'ok':'ng'); mk.textContent = isOk?'⭕':'❌';
   if (isOk) playCorrectSound(); else playWrongSound();
+  speakJapanese(q.japanese);
   var c = q;
   results.push({word:c.word,japanese:c.japanese,explanation:c.explanation,example_en:c.example_en,example_jp:c.example_jp,syn1:c.syn1,syn2:c.syn2,num:c.num,ok:isOk});
   choiceTimer = setTimeout(function(){
@@ -680,14 +817,34 @@ function answerChoice(selected, correct, q, mode) {
     idx++; if (idx>=cards.length){showResult();return;} loadCard();
   }, 1600);
 }
+function forceTimeout(correct, q, mode) {
+  quizTimer = null;
+  document.getElementById('timerBarBg').style.display = 'none';
+  var gridId = mode==='blank' ? 'blankChoiceGrid' : 'choiceGrid';
+  var btns = document.getElementById(gridId).querySelectorAll('.choice-btn');
+  for (var i=0;i<btns.length;i++) btns[i].disabled = true;
+  if (btns[correct]) btns[correct].classList.add('correct');
+  playWrongSound();
+  speakJapanese(q.japanese);
+  var ov=document.getElementById('verdictOverlay'), mk=document.getElementById('verdictMark');
+  ov.className='verdict-overlay show ng'; mk.textContent='❌';
+  results.push({word:q.word,japanese:q.japanese,explanation:q.explanation,
+    example_en:q.example_en,example_jp:q.example_jp,syn1:q.syn1,syn2:q.syn2,num:q.num,ok:false});
+  choiceTimer = setTimeout(function(){
+    ov.className='verdict-overlay'; mk.textContent='';
+    idx++; if(idx>=cards.length){showResult();return;} loadCard();
+  }, 1600);
+}
 function stopAll() {
   if (autoTimer) {clearTimeout(autoTimer);autoTimer=null;}
   if (choiceTimer) {clearTimeout(choiceTimer);choiceTimer=null;}
+  if (quizTimer) {clearTimeout(quizTimer);quizTimer=null;}
 }
 
 // ===== 結果 =====
 function showResult() {
   stopAll(); document.getElementById('autoControls').classList.remove('vis'); stopStudyTimer();
+  recordDailyMode(currentMode);
   var okCount = results.filter(function(r){return r.ok===true;}).length;
   var ngCount = results.filter(function(r){return r.ok===false;}).length;
   var total = results.length;
@@ -701,10 +858,14 @@ function showResult() {
   document.getElementById('resEmoji').textContent = emoji;
   document.getElementById('resScore').textContent = currentMode==='auto' ? total+'語 スクロール完了' : okCount+' / '+total+' 問 正解！';
   document.getElementById('resMsg').textContent = msg;
-  var btnR = document.getElementById('btnReview'), rc = document.getElementById('reviewComplete');
-  rc.style.display = 'none';
-  if (currentMode!=='auto' && ngCount>0) { document.getElementById('reviewCount').textContent=ngCount; btnR.style.display='inline-block'; }
-  else if (isReviewMode && ngCount===0 && total>0) { btnR.style.display='none'; rc.style.display='block'; }
+  var btnR=document.getElementById('btnReview'), rc=document.getElementById('reviewComplete');
+  var btnRC=document.getElementById('btnReviewC'), btnRB=document.getElementById('btnReviewB');
+  rc.style.display='none'; btnRC.style.display='none'; btnRB.style.display='none';
+  if (currentMode!=='auto' && ngCount>0) {
+    document.getElementById('reviewCount').textContent=ngCount; btnR.style.display='inline-block';
+    document.getElementById('reviewCountC').textContent=ngCount; btnRC.style.display='inline-block';
+    document.getElementById('reviewCountB').textContent=ngCount; btnRB.style.display='inline-block';
+  } else if (isReviewMode && ngCount===0 && total>0) { btnR.style.display='none'; rc.style.display='block'; }
   else { btnR.style.display='none'; }
   var html='';
   for (var i=0;i<results.length;i++) {
@@ -713,6 +874,21 @@ function showResult() {
     html+='<div class="res-item">'+mark+'<span class="res-word">'+r.word+'</span><span class="res-jp">'+r.japanese+'</span></div>';
   }
   document.getElementById('resList').innerHTML = html;
+  // 5択・穴埋めの不正解を前回不正解として保存
+  if (currentMode === 'choice' || currentMode === 'blank') {
+    var key = (currentMode === 'choice' ? 'eiken_wrong_choice_' : 'eiken_wrong_blank_') + currentSet;
+    try {
+      if (ngCount > 0) {
+        var wrongCards = results.filter(function(r){return r.ok===false;}).map(function(r){
+          return {word:r.word,japanese:r.japanese,explanation:r.explanation,
+            example_en:r.example_en,example_jp:r.example_jp,syn1:r.syn1,syn2:r.syn2,num:r.num};
+        });
+        localStorage.setItem(key, JSON.stringify(wrongCards));
+      } else {
+        localStorage.removeItem(key);
+      }
+    } catch(e) {}
+  }
   showScreen('screenResult');
 }
 function retrySet() { isReviewMode=false; startQuiz(currentMode); }
@@ -722,11 +898,135 @@ function shuffle(arr) {
   return a;
 }
 
+
+// ===== 日別学習記録 =====
+var calYear = new Date().getFullYear(), calMonth = new Date().getMonth();
+function dateKey(d) {
+  return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);
+}
+function fmtMin(sec) {
+  if (!sec) return '';
+  var m = Math.round(sec/60);
+  return m < 60 ? m+'m' : Math.floor(m/60)+'h'+(m%60?m%60+'m':'');
+}
+function getStamp(d) {
+  if (!d) return '';
+  if (d.choice && d.blank) return '🥇';
+  if (d.choice || d.blank) return '🥈';
+  if (d.manual || d.auto) return '🥉';
+  return '';
+}
+function recordDailyMode(mode) {
+  if (!mode) return;
+  try {
+    var tk = dateKey(new Date()), dy = {};
+    try { dy = JSON.parse(localStorage.getItem('eiken_daily')||'{}'); } catch(e2) {}
+    if (!dy[tk]) dy[tk] = {choice:false,blank:false,manual:false,auto:false,seconds:0};
+    if (mode==='choice') dy[tk].choice = true;
+    else if (mode==='blank') dy[tk].blank = true;
+    else if (mode==='manual') dy[tk].manual = true;
+    else if (mode==='auto') dy[tk].auto = true;
+    localStorage.setItem('eiken_daily', JSON.stringify(dy));
+  } catch(e) {}
+}
+function calcStreak() {
+  var dy = {}; try { dy = JSON.parse(localStorage.getItem('eiken_daily')||'{}'); } catch(e) {}
+  var d = new Date(); d.setHours(0,0,0,0);
+  var r0 = dy[dateKey(d)];
+  if (!r0 || !(r0.choice||r0.blank||r0.manual||r0.auto)) d.setDate(d.getDate()-1);
+  var streak = 0;
+  while (true) {
+    var r = dy[dateKey(d)];
+    if (r && (r.choice||r.blank||r.manual||r.auto)) { streak++; d.setDate(d.getDate()-1); } else break;
+  }
+  return streak;
+}
+function updateWeekStrip() {
+  var dy = {}; try { dy = JSON.parse(localStorage.getItem('eiken_daily')||'{}'); } catch(e) {}
+  var streak = calcStreak();
+  var el = document.getElementById('weekStreakTxt');
+  if (el) el.innerHTML = '<strong>'+streak+'</strong>日連続学習中';
+  var container = document.getElementById('weekDaysEl'); if (!container) return;
+  var today = new Date(); today.setHours(0,0,0,0);
+  var dow = today.getDay();
+  var dayNames = ['日','月','火','水','木','金','土'];
+  var html = '';
+  for (var i = 0; i < 7; i++) {
+    var d = new Date(today); d.setDate(today.getDate() - dow + i);
+    var k = dateKey(d), stamp = getStamp(dy[k]), isToday = (i===dow);
+    html += '<div class="week-day'+(isToday?' week-today':'')+'"><div class="week-day-name">'+dayNames[i]+'</div>';
+    html += '<div class="week-day-stamp">'+(stamp||'○')+'</div>';
+    html += '<div class="week-day-num">'+d.getDate()+'</div></div>';
+  }
+  container.innerHTML = html;
+}
+function openCal() {
+  var now = new Date(); calYear = now.getFullYear(); calMonth = now.getMonth();
+  updateCalModal(); document.getElementById('calOverlay').style.display = 'block';
+}
+function closeCal() { document.getElementById('calOverlay').style.display = 'none'; }
+function prevCalMonth() { calMonth--; if (calMonth<0){calMonth=11;calYear--;} updateCalModal(); }
+function nextCalMonth() { calMonth++; if (calMonth>11){calMonth=0;calYear++;} updateCalModal(); }
+function updateCalModal() {
+  document.getElementById('calTitle').textContent = calYear+'年'+(calMonth+1)+'月';
+  var dy = {}; try { dy = JSON.parse(localStorage.getItem('eiken_daily')||'{}'); } catch(e) {}
+  var firstDow = new Date(calYear, calMonth, 1).getDay();
+  var lastDay = new Date(calYear, calMonth+1, 0).getDate();
+  var today = new Date(); today.setHours(0,0,0,0);
+  var html = '', cellIdx = 0;
+  html += '<div class="cal-row">';
+  for (var e = 0; e < firstDow; e++) { html += '<div class="cal-cell cal-empty"></div>'; cellIdx++; }
+  for (var day = 1; day <= lastDay; day++) {
+    var dd = new Date(calYear, calMonth, day); dd.setHours(0,0,0,0);
+    var k = calYear+'-'+('0'+(calMonth+1)).slice(-2)+'-'+('0'+day).slice(-2);
+    var rec = dy[k], stamp = getStamp(rec), tm = rec ? fmtMin(rec.seconds) : '';
+    var isToday = dd.getTime()===today.getTime(), isFuture = dd > today;
+    html += '<div class="cal-cell'+(isToday?' cal-today':'')+'"><div class="cal-cell-num">'+day+'</div>';
+    html += '<div class="cal-cell-stamp">'+(isFuture?'':(stamp||'・'))+'</div>';
+    html += '<div class="cal-cell-time">'+(isFuture||!tm?'':tm)+'</div></div>';
+    cellIdx++;
+    if (cellIdx%7===0 && day<lastDay) html += '</div><div class="cal-row">';
+  }
+  while (cellIdx%7!==0) { html += '<div class="cal-cell cal-empty"></div>'; cellIdx++; }
+  html += '</div>';
+  document.getElementById('calGrid').innerHTML = html;
+}
+function startPrevWrong(mode, setIdx) {
+  var key = (mode === 'choice' ? 'eiken_wrong_choice_' : 'eiken_wrong_blank_') + setIdx;
+  var wrongCards;
+  try { wrongCards = JSON.parse(localStorage.getItem(key)); } catch(e) {}
+  if (!wrongCards || !wrongCards.length) {
+    alert(mode==='choice' ? 'セット'+(setIdx+1)+'の5択クイズにまだ挑戦していません' : 'セット'+(setIdx+1)+'の穴埋めクイズにまだ挑戦していません');
+    return;
+  }
+  currentSet = setIdx; currentMode = mode; isReviewMode = false;
+  cards = shuffle(wrongCards); idx = 0; results = [];
+  startStudyTimer();
+  document.getElementById('modeBadge').textContent = mode==='choice' ? '🎯 5択 前回不正解 セット'+(setIdx+1) : '📝 穴埋め 前回不正解 セット'+(setIdx+1);
+  document.getElementById('timerBarBg').style.display = 'none';
+  document.getElementById('autoControls').classList.remove('vis');
+  showScreen('screenQuiz'); loadCard();
+}
+function updatePrevWrongButtons() {}
+
 // ===== 初期化 =====
 try { updateMuteBtn(); } catch(e) {}
 try { updateHintBtn(); } catch(e) {}
 try { updateHistoryPanel(); } catch(e) {}
 try { updateSetScores(); } catch(e) {}
+try { updatePrevWrongButtons(); } catch(e) {}
 </script>
+<div id="calOverlay" class="cal-overlay" onclick="if(event.target===this)closeCal()">
+  <div class="cal-box">
+    <div class="cal-hdr">
+      <button class="cal-nav" onclick="prevCalMonth()">&#8249;</button>
+      <span class="cal-hdr-title" id="calTitle">2026年6月</span>
+      <button class="cal-nav" onclick="nextCalMonth()">&#8250;</button>
+      <button class="cal-close-btn" onclick="closeCal()">✕</button>
+    </div>
+    <div class="cal-wk-hdr"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+    <div class="cal-grid-wrap" id="calGrid"></div>
+  </div>
+</div>
 </body>
 </html>
