@@ -305,6 +305,10 @@ body{font-family:'Hiragino Maru Gothic Pro',sans-serif;
       <div class="mode-icon">🔁📝</div><div class="mode-name">不正解穴埋め</div>
       <div class="mode-desc" id="modePwbDesc">まだ挑戦なし</div>
     </div>
+    <div class="mode-card" onclick="startQuiz('sentence')">
+      <div class="mode-icon">🔊</div><div class="mode-name">例文読み上げ</div>
+      <div class="mode-desc">単語→例文→訳を<br>自動で読み上げ</div>
+    </div>
   </div>
   <div class="speed-area">
     <div class="speed-label">⏱ 自動スピード：<span class="speed-disp" id="speedDisp">5</span>秒 / 1枚</div>
@@ -494,27 +498,40 @@ try { pickVoice(); pickJpVoice(); } catch(e) {}
 try { if (window.speechSynthesis) speechSynthesis.onvoiceschanged = function(){ pickVoice(); pickJpVoice(); }; } catch(e) {}
 
 var jpSpoken = false;
+var engUtt = null; // 英語発音中のUtteranceを保持
 function speakJapanese(text) {
   if (isMuted || !window.speechSynthesis || jpSpoken) return;
   jpSpoken = true;
   try {
-    speechSynthesis.cancel();
     var clean = text.replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
     var utt = new SpeechSynthesisUtterance(clean||text);
-    utt.lang = 'ja-JP'; utt.rate = 1.2; utt.pitch = 1.1;
+    utt.lang = 'ja-JP'; utt.rate = 1.35; utt.pitch = 1.1;
     if (jpVoice) utt.voice = jpVoice;
-    setTimeout(function(){ try { speechSynthesis.speak(utt); } catch(e){} }, 80);
+    if (engUtt && speechSynthesis.speaking) {
+      // 英語が話し終わってから日本語を再生（英語を中断しない）
+      engUtt.onend = function() {
+        engUtt = null;
+        try { speechSynthesis.speak(utt); } catch(e) {}
+      };
+    } else {
+      // 英語は既に終了 → 少し待って日本語再生
+      speechSynthesis.cancel();
+      setTimeout(function(){ try { speechSynthesis.speak(utt); } catch(e){} }, 80);
+    }
   } catch(e) {}
 }
 function speakWord(word) {
   if (isMuted || !window.speechSynthesis) return;
   try {
+    engUtt = null;
     speechSynthesis.cancel();
     var utt = new SpeechSynthesisUtterance(word);
-    utt.lang = 'en-US'; utt.rate = 0.82; utt.pitch = 1.1;
+    utt.lang = 'en-US'; utt.rate = 0.9; utt.pitch = 1.1;
     if (femaleVoice) utt.voice = femaleVoice;
+    utt.onend = function() { engUtt = null; };
+    engUtt = utt;
     speechSynthesis.speak(utt);
-  } catch(e) {}
+  } catch(e) { engUtt = null; }
 }
 
 // ===== 効果音 =====
@@ -623,9 +640,10 @@ function startQuiz(mode) {
   startStudyTimer();
   document.getElementById('modeBadge').textContent =
     mode==='auto' ? ('⚡ 自動 '+autoSpeed+'秒') :
-    mode==='choice' ? '🎯 5択' : mode==='blank' ? '📝 穴埋め' : '✋ 手動';
-  document.getElementById('timerBarBg').style.display = mode==='auto' ? 'block' : 'none';
-  if (mode==='auto') document.getElementById('autoControls').classList.add('vis');
+    mode==='choice' ? '🎯 5択' : mode==='blank' ? '📝 穴埋め' :
+    mode==='sentence' ? ('🔊 例文読み上げ '+autoSpeed+'秒') : '✋ 手動';
+  document.getElementById('timerBarBg').style.display = (mode==='auto'||mode==='sentence') ? 'block' : 'none';
+  if (mode==='auto'||mode==='sentence') document.getElementById('autoControls').classList.add('vis');
   else document.getElementById('autoControls').classList.remove('vis');
   showScreen('screenQuiz'); loadCard();
 }
@@ -653,9 +671,83 @@ function startReviewMode(mode) {
 }
 
 // ===== カード =====
+var sentenceChainId = 0;
+function loadSentenceCard() {
+  var chainId = ++sentenceChainId;
+  var q = cards[idx];
+  engUtt = null;
+  document.getElementById('qNum').textContent = '第 '+(idx+1)+' 問';
+  document.getElementById('progressInfo').textContent = (idx+1)+' / '+cards.length;
+  document.getElementById('progressFill').style.width = (idx/cards.length*100)+'%';
+  document.getElementById('verdictOverlay').className = 'verdict-overlay';
+  document.getElementById('verdictMark').textContent = '';
+  document.getElementById('revealBtn').style.display = 'none';
+  document.getElementById('hintText').style.display = 'none';
+  document.getElementById('evalBtns').style.display = 'none';
+  document.getElementById('choiceArea').classList.remove('vis');
+  document.getElementById('blankArea').classList.remove('vis');
+  document.getElementById('engWord').style.display = 'block';
+  document.getElementById('engWord').textContent = q.word;
+  document.getElementById('jpMain').textContent = '';
+  document.getElementById('ansExp').textContent = '';
+  document.getElementById('syn1').textContent = '';
+  document.getElementById('syn2').textContent = '';
+  document.getElementById('rowSyn').style.display = 'none';
+  document.getElementById('ansExEn').textContent = q.example_en || '';
+  var cleanJpEx = (q.example_jp||'').replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+  document.getElementById('ansExJp').textContent = cleanJpEx;
+  document.getElementById('answerArea').classList.add('vis');
+  animateTimerBar(autoSpeed * 1000);
+
+  function speakExEn() {
+    if (sentenceChainId !== chainId || isMuted || !window.speechSynthesis) return;
+    var txt = q.example_en || ''; if (!txt) { speakExJp(); return; }
+    var utt = new SpeechSynthesisUtterance(txt);
+    utt.lang = 'en-US'; utt.rate = 0.9; utt.pitch = 1.1;
+    if (femaleVoice) utt.voice = femaleVoice;
+    utt.onend = speakExJp;
+    try { speechSynthesis.speak(utt); } catch(e) {}
+  }
+  function speakExJp() {
+    if (sentenceChainId !== chainId || isMuted || !window.speechSynthesis) return;
+    var cleanJp = (q.example_jp||'').replace(/[（(][^）)]*[）)]/g,'').replace(/\s+/g,' ').trim();
+    if (!cleanJp) { schedNext(); return; }
+    var utt = new SpeechSynthesisUtterance(cleanJp);
+    utt.lang = 'ja-JP'; utt.rate = 1.35; utt.pitch = 1.1;
+    if (jpVoice) utt.voice = jpVoice;
+    utt.onend = schedNext;
+    try { speechSynthesis.speak(utt); } catch(e) {}
+  }
+  function schedNext() {
+    if (sentenceChainId !== chainId) return;
+    autoTimer = setTimeout(function() {
+      if (sentenceChainId !== chainId) return;
+      results.push({word:q.word,japanese:q.japanese,explanation:q.explanation,
+        example_en:q.example_en,example_jp:q.example_jp,syn1:q.syn1,syn2:q.syn2,num:q.num,ok:null});
+      idx++; if (idx>=cards.length){showResult();return;} loadCard();
+    }, Math.max(800, autoSpeed * 600));
+  }
+  var wordDone = false;
+  function afterWordDone() {
+    if (wordDone) return; wordDone = true;
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+    speakExEn();
+  }
+  speakWord(q.word);
+  if (engUtt) {
+    engUtt.onend = function() { engUtt = null; afterWordDone(); };
+    autoTimer = setTimeout(function() {
+      try { if (engUtt) { engUtt.onend = null; engUtt = null; } } catch(e) {}
+      afterWordDone();
+    }, 4000);
+  } else {
+    setTimeout(afterWordDone, 100);
+  }
+}
 function loadCard() {
   jpSpoken = false;
   stopAll();
+  if (currentMode==='sentence') { if (idx>=cards.length){showResult();return;} loadSentenceCard(); return; }
   if (currentMode==='blank') { while (idx<cards.length && !cards[idx].example_en) idx++; if (idx>=cards.length) {showResult();return;} }
   var q = cards[idx], total = cards.length;
   document.getElementById('qNum').textContent = '第 '+(idx+1)+' 問';
@@ -710,17 +802,35 @@ function next(ok) {
 
 // ===== 自動 =====
 function startAutoCard() {
-  var total = autoSpeed*1000, qTime = Math.max(500,Math.floor(total*.2)), aTime = total-qTime;
+  var total = autoSpeed * 1000;
+  var jpTime = Math.max(1200, Math.floor(total * 0.8)); // 答え表示時間
+  var revealDone = false;
   animateTimerBar(total);
-  autoTimer = setTimeout(function() {
+
+  function doReveal() {
+    if (revealDone) return;
+    revealDone = true;
+    if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
     document.getElementById('answerArea').classList.add('vis');
     speakJapanese(cards[idx].japanese);
     autoTimer = setTimeout(function() {
       var c = cards[idx];
       results.push({word:c.word,japanese:c.japanese,explanation:c.explanation,example_en:c.example_en,example_jp:c.example_jp,syn1:c.syn1,syn2:c.syn2,num:c.num,ok:null});
       idx++; if (idx>=cards.length) {showResult();return;} loadCard();
-    }, aTime);
-  }, qTime);
+    }, jpTime);
+  }
+
+  if (engUtt) {
+    // 英語が話し終わってから答えを表示（英語を絶対に切らない）
+    engUtt.onend = function() { engUtt = null; doReveal(); };
+    // 安全弁: 4秒経っても終わらなければ強制表示
+    autoTimer = setTimeout(function() {
+      if (engUtt) { try { engUtt.onend = null; } catch(e) {} engUtt = null; }
+      doReveal();
+    }, 4000);
+  } else {
+    autoTimer = setTimeout(doReveal, Math.max(500, Math.floor(total * 0.2)));
+  }
 }
 function stopAutoMode() {
   stopAll(); currentMode = 'manual';
@@ -836,9 +946,11 @@ function forceTimeout(correct, q, mode) {
   }, 1600);
 }
 function stopAll() {
+  sentenceChainId++; // 例文読み上げチェーンを中断
   if (autoTimer) {clearTimeout(autoTimer);autoTimer=null;}
   if (choiceTimer) {clearTimeout(choiceTimer);choiceTimer=null;}
   if (quizTimer) {clearTimeout(quizTimer);quizTimer=null;}
+  try { if (engUtt) { engUtt.onend = null; } } catch(e) {}
 }
 
 // ===== 結果 =====
